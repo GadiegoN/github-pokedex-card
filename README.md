@@ -1,6 +1,6 @@
-# GitHub Trainer Card
+# GitHub Pokedex Card
 
-GitHub Trainer Card é uma aplicação web que gera um **card estilizado inspirado em cartas de Pokémon** utilizando dados públicos de um perfil do GitHub.
+GitHub Pokedex Card é uma aplicação web que gera um **card estilizado inspirado em cartas de Pokémon** utilizando dados públicos de um perfil do GitHub.
 O card pode ser **baixado como imagem PNG** e compartilhado em redes sociais.
 
 A aplicação consulta a API pública do GitHub, transforma os dados do perfil em métricas visuais e renderiza um card com avatar, bio, estatísticas e um sistema simples de nível.
@@ -94,13 +94,13 @@ src
 Clone o repositório:
 
 ```
-git clone https://github.com/seu-usuario/github-trainer-card.git
+git clone https://github.com/seu-usuario/github-pokedex-card.git
 ```
 
 Entre na pasta do projeto:
 
 ```
-cd github-trainer-card
+cd github-pokedex-card
 ```
 
 Instale as dependências:
