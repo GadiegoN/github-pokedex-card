@@ -24,13 +24,18 @@ export function GithubCardForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-3 sm:flex-row">
+    <form
+      onSubmit={onSubmit}
+      className="flex w-full flex-col gap-3 sm:flex-row"
+    >
       <Input
         placeholder="Digite o username do GitHub"
         value={username}
         onChange={(event) => setUsername(event.target.value)}
+        className="w-full"
       />
-      <Button type="submit" className="sm:min-w-36">
+
+      <Button type="submit" className="w-full sm:w-auto sm:min-w-36">
         Gerar card
       </Button>
     </form>
