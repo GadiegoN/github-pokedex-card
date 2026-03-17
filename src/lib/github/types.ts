@@ -13,6 +13,20 @@ export type GithubUserResponse = {
   created_at: string;
 };
 
+export type GithubCardRarity = "common" | "rare" | "epic" | "legendary";
+
+export type GithubCardType =
+  | "electric"
+  | "steel"
+  | "rock"
+  | "psychic"
+  | "fire";
+
+export type GithubProfileStat = {
+  label: string;
+  value: number;
+};
+
 export type GithubProfileCardData = {
   username: string;
   displayName: string;
@@ -27,4 +41,7 @@ export type GithubProfileCardData = {
   following: number;
   yearsOnGithub: number;
   level: number;
+  rarity: GithubCardRarity;
+  cardType: GithubCardType;
+  stats: GithubProfileStat[];
 };

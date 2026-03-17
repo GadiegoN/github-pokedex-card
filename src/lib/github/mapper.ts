@@ -1,21 +1,40 @@
 import type { GithubProfileCardData, GithubUserResponse } from "./types";
+import { buildProfileStats } from "./card/build-profile-stats";
+import { calculateProfileLevel } from "./card/calculate-profile-level";
+import { calculateYearsOnGithub } from "./card/calculate-years-on-github";
+import { getCardRarity } from "./card/get-card-rarity";
+import { getCardType } from "./card/get-card-type";
 
 export function mapGithubUserToCardData(
   user: GithubUserResponse,
 ): GithubProfileCardData {
-  const createdYear = new Date(user.created_at).getFullYear();
-  const currentYear = new Date().getFullYear();
-  const yearsOnGithub = Math.max(1, currentYear - createdYear);
-
-  const level = Math.max(
-    1,
-    Math.floor(
-      user.public_repos * 0.7 +
-        user.followers * 0.2 +
-        yearsOnGithub * 2 +
-        user.following * 0.05,
-    ),
-  );
+  const yearsOnGithub = calculateYearsOnGithub(user.created_at);
+  const level = calculateProfileLevel({
+    publicRepos: user.public_repos,
+    followers: user.followers,
+    following: user.following,
+    yearsOnGithub,
+  });
+  const rarity = getCardRarity({
+    level,
+    followers: user.followers,
+    publicRepos: user.public_repos,
+    yearsOnGithub,
+  });
+  const cardType = getCardType({
+    followers: user.followers,
+    publicRepos: user.public_repos,
+    yearsOnGithub,
+    hasBio: Boolean(user.bio),
+    hasWebsite: Boolean(user.blog),
+  });
+  const stats = buildProfileStats({
+    level,
+    followers: user.followers,
+    publicRepos: user.public_repos,
+    following: user.following,
+    yearsOnGithub,
+  });
 
   return {
     username: user.login,
@@ -31,5 +50,8 @@ export function mapGithubUserToCardData(
     following: user.following,
     yearsOnGithub,
     level,
+    rarity,
+    cardType,
+    stats,
   };
 }

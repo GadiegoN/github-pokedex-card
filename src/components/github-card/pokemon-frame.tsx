@@ -4,14 +4,16 @@ import { cn } from "@/lib/utils/cn";
 type Props = {
   children: ReactNode;
   className?: string;
+  frameClassName?: string;
 };
 
-export function PokemonFrame({ children, className }: Props) {
+export function PokemonFrame({ children, className, frameClassName }: Props) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-4xl border-10 border-[#f6d365]",
-        "bg-[linear-gradient(180deg,#fff7cc_0%,#ffd86b_48%,#ffbe3b_100%)] shadow-[0_24px_80px_rgba(0,0,0,0.28)]",
+        "relative overflow-hidden rounded-4xl border-10 shadow-[0_24px_80px_rgba(0,0,0,0.28)]",
+        "bg-[linear-gradient(180deg,#fff7cc_0%,#ffd86b_48%,#ffbe3b_100%)] border-[#f6d365]",
+        frameClassName,
         className,
       )}
     >
