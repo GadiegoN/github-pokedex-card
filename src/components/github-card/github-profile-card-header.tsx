@@ -30,7 +30,9 @@ export function GithubProfileCardHeader({
 
       <div className="flex shrink-0 flex-col items-end gap-2">
         <Badge className={rarityClassName}>{getRarityLabel(data.rarity)}</Badge>
-        <Badge className="bg-red-500 text-white">LV {data.level}</Badge>
+        <Badge className="animate-level-pulse bg-red-500 text-white">
+          LV {data.level}
+        </Badge>
       </div>
     </div>
   );

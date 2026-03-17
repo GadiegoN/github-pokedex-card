@@ -1,6 +1,7 @@
 import type { GithubProfileCardData } from "@/lib/github/types";
 import { PokemonFrame } from "./pokemon-frame";
 import { getCardTheme } from "./card-theme";
+import { CardSection } from "./card-section";
 import { GithubProfileCardDetails } from "./github-profile-card-details";
 import { GithubProfileCardHeader } from "./github-profile-card-header";
 import { GithubProfileCardPortrait } from "./github-profile-card-portrait";
@@ -19,18 +20,29 @@ export function GithubProfileCard({ data }: Props) {
       frameClassName={theme.frameClassName}
     >
       <div className="p-5">
-        <GithubProfileCardHeader
-          data={data}
-          rarityClassName={theme.rarityClassName}
-          typeClassName={theme.typeClassName}
-        />
-        <GithubProfileCardPortrait
-          avatarUrl={data.avatarUrl}
-          displayName={data.displayName}
-          mediaClassName={theme.mediaClassName}
-        />
-        <GithubProfileCardDetails data={data} />
-        <GithubProfileCardStats stats={data.stats} />
+        <CardSection delayClassName="animate-delay-0">
+          <GithubProfileCardHeader
+            data={data}
+            rarityClassName={theme.rarityClassName}
+            typeClassName={theme.typeClassName}
+          />
+        </CardSection>
+
+        <CardSection delayClassName="animate-delay-1">
+          <GithubProfileCardPortrait
+            avatarUrl={data.avatarUrl}
+            displayName={data.displayName}
+            mediaClassName={theme.mediaClassName}
+          />
+        </CardSection>
+
+        <CardSection delayClassName="animate-delay-2">
+          <GithubProfileCardDetails data={data} />
+        </CardSection>
+
+        <CardSection delayClassName="animate-delay-3">
+          <GithubProfileCardStats stats={data.stats} />
+        </CardSection>
       </div>
     </PokemonFrame>
   );
