@@ -7,14 +7,20 @@ type Props = {
 };
 
 export function GithubProfileCardStats({ stats }: Props) {
+  const hasOddCount = stats.length % 2 !== 0;
+
   return (
     <div className="mt-4 grid grid-cols-2 gap-3">
-      {stats.map((stat) => (
-        <StatChip
+      {stats.map((stat, index) => (
+        <div
           key={stat.label}
-          label={stat.label}
-          value={formatCompactNumber(stat.value)}
-        />
+          className={hasOddCount && index === stats.length - 1 ? "col-span-2" : ""}
+        >
+          <StatChip
+            label={stat.label}
+            value={formatCompactNumber(stat.value)}
+          />
+        </div>
       ))}
     </div>
   );

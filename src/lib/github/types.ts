@@ -18,6 +18,14 @@ export type GithubRepoResponse = {
   fork: boolean;
 };
 
+export type GithubUserEventResponse = {
+  type: string;
+  created_at: string;
+  repo: {
+    name: string;
+  };
+};
+
 export type GithubCardRarity = "common" | "rare" | "epic" | "legendary";
 
 export type GithubCardType =
@@ -30,6 +38,12 @@ export type GithubCardType =
 export type GithubProfileStat = {
   label: string;
   value: number;
+};
+
+export type GithubRecentActivity = {
+  eventsLast30Days: number;
+  pushEventsLast30Days: number;
+  activeReposLast30Days: number;
 };
 
 export type GithubProfileCardData = {
@@ -49,5 +63,6 @@ export type GithubProfileCardData = {
   rarity: GithubCardRarity;
   cardType: GithubCardType;
   mainLanguage: string;
+  recentActivity: GithubRecentActivity;
   stats: GithubProfileStat[];
 };

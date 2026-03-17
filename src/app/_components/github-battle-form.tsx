@@ -17,6 +17,12 @@ export function GithubBattleForm({
   const router = useRouter();
   const [leftUsername, setLeftUsername] = useState(initialLeftUsername);
   const [rightUsername, setRightUsername] = useState(initialRightUsername);
+  const normalizedLeftUsername = leftUsername.trim().toLowerCase();
+  const normalizedRightUsername = rightUsername.trim().toLowerCase();
+  const hasDuplicateUsernames =
+    normalizedLeftUsername !== "" &&
+    normalizedRightUsername !== "" &&
+    normalizedLeftUsername === normalizedRightUsername;
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,7 +30,7 @@ export function GithubBattleForm({
     const leftValue = leftUsername.trim();
     const rightValue = rightUsername.trim();
 
-    if (!leftValue || !rightValue) {
+    if (!leftValue || !rightValue || hasDuplicateUsernames) {
       return;
     }
 
@@ -56,10 +62,16 @@ export function GithubBattleForm({
           onChange={(event) => setRightUsername(event.target.value)}
         />
       </div>
+      {hasDuplicateUsernames ? (
+        <p className="mt-3 text-sm text-danger">
+          Escolha dois perfis diferentes para a batalha.
+        </p>
+      ) : null}
       <div className="mt-3 flex justify-center lg:justify-start">
         <Button
           type="submit"
           variant="secondary"
+          disabled={hasDuplicateUsernames}
           className="w-full sm:w-auto sm:min-w-40"
         >
           Comparar perfis

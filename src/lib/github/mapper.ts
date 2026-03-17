@@ -1,4 +1,8 @@
-import type { GithubProfileCardData, GithubUserResponse } from "./types";
+import type {
+  GithubProfileCardData,
+  GithubRecentActivity,
+  GithubUserResponse,
+} from "./types";
 import { buildProfileStats } from "./card/build-profile-stats";
 import { calculateProfileLevel } from "./card/calculate-profile-level";
 import { calculateYearsOnGithub } from "./card/calculate-years-on-github";
@@ -8,6 +12,7 @@ import { getCardType } from "./card/get-card-type";
 export function mapGithubUserToCardData(
   user: GithubUserResponse,
   mainLanguage: string,
+  recentActivity: GithubRecentActivity,
 ): GithubProfileCardData {
   const yearsOnGithub = calculateYearsOnGithub(user.created_at);
   const level = calculateProfileLevel({
@@ -35,6 +40,8 @@ export function mapGithubUserToCardData(
     publicRepos: user.public_repos,
     following: user.following,
     yearsOnGithub,
+    eventsLast30Days: recentActivity.eventsLast30Days,
+    pushEventsLast30Days: recentActivity.pushEventsLast30Days,
   });
 
   return {
@@ -54,6 +61,7 @@ export function mapGithubUserToCardData(
     rarity,
     cardType,
     mainLanguage,
+    recentActivity,
     stats,
   };
 }

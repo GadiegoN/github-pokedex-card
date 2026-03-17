@@ -1,3 +1,5 @@
+import { buildRecentActivity } from "./activity/build-recent-activity";
+import { fetchGithubUserEvents } from "./fetch-github-user-events";
 import { mapGithubUserToCardData } from "./mapper";
 import { fetchGithubUser } from "./fetch-github-user";
 import { fetchGithubUserRepos } from "./fetch-github-user-repos";
@@ -16,7 +18,9 @@ export async function getGithubProfileCardData(
   }
 
   const repos = await fetchGithubUserRepos(username);
+  const events = await fetchGithubUserEvents(username);
   const mainLanguage = resolveMainLanguage(repos);
+  const recentActivity = buildRecentActivity(events);
 
-  return mapGithubUserToCardData(user, mainLanguage);
+  return mapGithubUserToCardData(user, mainLanguage, recentActivity);
 }

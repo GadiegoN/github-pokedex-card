@@ -3,6 +3,7 @@ import {
   Github,
   Link as LinkIcon,
   MapPin,
+  Radio,
   Sparkles,
 } from "lucide-react";
 import type { GithubProfileCardData } from "@/lib/github/types";
@@ -35,6 +36,13 @@ export function GithubProfileCardDetails({ data }: Props) {
         <div className="flex items-center gap-2">
           <Sparkles className="size-4 shrink-0" />
           <span className="truncate">{data.mainLanguage}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Radio className="size-4 shrink-0" />
+          <span className="truncate">
+            {data.recentActivity.eventsLast30Days} eventos publicos em 30 dias
+          </span>
         </div>
 
         {data.website ? (

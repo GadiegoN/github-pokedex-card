@@ -26,8 +26,14 @@ export default async function BattlePage({ params }: PageProps) {
   const { leftUsername, rightUsername } = await params;
   const normalizedLeft = leftUsername.trim();
   const normalizedRight = rightUsername.trim();
+  const leftComparisonKey = normalizedLeft.toLowerCase();
+  const rightComparisonKey = normalizedRight.toLowerCase();
 
-  if (!normalizedLeft || !normalizedRight) {
+  if (
+    !normalizedLeft ||
+    !normalizedRight ||
+    leftComparisonKey === rightComparisonKey
+  ) {
     notFound();
   }
 
