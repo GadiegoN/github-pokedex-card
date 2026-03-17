@@ -12,9 +12,9 @@ type Props = {
 };
 
 export function DownloadCardButton({ targetId, fileName }: Props) {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
-    "idle",
-  );
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
   async function handleDownload() {
     const element = document.getElementById(targetId);
@@ -44,11 +44,7 @@ export function DownloadCardButton({ targetId, fileName }: Props) {
   }
 
   return (
-    <Button
-      onClick={handleDownload}
-      disabled={status === "loading"}
-      className="animate-button-glow min-w-40"
-    >
+    <Button onClick={handleDownload} disabled={status === "loading"}>
       <DownloadButtonLabel status={status} />
     </Button>
   );

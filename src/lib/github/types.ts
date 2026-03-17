@@ -13,6 +13,11 @@ export type GithubUserResponse = {
   created_at: string;
 };
 
+export type GithubRepoResponse = {
+  language: string | null;
+  fork: boolean;
+};
+
 export type GithubCardRarity = "common" | "rare" | "epic" | "legendary";
 
 export type GithubCardType =
@@ -43,5 +48,6 @@ export type GithubProfileCardData = {
   level: number;
   rarity: GithubCardRarity;
   cardType: GithubCardType;
+  mainLanguage: string;
   stats: GithubProfileStat[];
 };

@@ -7,6 +7,7 @@ import { getCardType } from "./card/get-card-type";
 
 export function mapGithubUserToCardData(
   user: GithubUserResponse,
+  mainLanguage: string,
 ): GithubProfileCardData {
   const yearsOnGithub = calculateYearsOnGithub(user.created_at);
   const level = calculateProfileLevel({
@@ -52,6 +53,7 @@ export function mapGithubUserToCardData(
     level,
     rarity,
     cardType,
+    mainLanguage,
     stats,
   };
 }

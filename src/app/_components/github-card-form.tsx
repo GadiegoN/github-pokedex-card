@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export function GithubCardForm() {
+type Props = {
+  initialUsername?: string;
+};
+
+export function GithubCardForm({ initialUsername = "" }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [username, setUsername] = useState(searchParams.get("username") ?? "");
+  const [username, setUsername] = useState(initialUsername);
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -20,7 +23,7 @@ export function GithubCardForm() {
       return;
     }
 
-    router.push(`/?username=${encodeURIComponent(value)}`);
+    router.push(`/card/${encodeURIComponent(value)}`);
   }
 
   return (
