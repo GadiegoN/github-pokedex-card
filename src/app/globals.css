@@ -1,27 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --color-background: oklch(0.97 0.02 95);
-  --color-foreground: oklch(0.23 0.03 262);
-  --color-surface: oklch(0.99 0.01 95);
-  --color-surface-strong: oklch(0.9 0.05 90);
-  --color-border: oklch(0.83 0.05 84);
-  --color-muted-foreground: oklch(0.48 0.03 250);
-  --color-accent: oklch(0.69 0.21 39);
-  --color-accent-foreground: oklch(0.99 0.01 95);
+  --background: oklch(0.97 0.02 95);
+  --foreground: oklch(0.23 0.03 262);
+  --surface: oklch(0.99 0.01 95);
+  --surface-strong: oklch(0.93 0.04 91);
+  --surface-glass: color-mix(in oklab, var(--surface) 62%, transparent);
+  --surface-glass-strong: color-mix(in oklab, var(--surface) 74%, transparent);
+  --surface-overlay: color-mix(in srgb, white 35%, transparent);
+  --surface-overlay-strong: color-mix(in srgb, black 12%, transparent);
+  --border: oklch(0.83 0.05 84);
+  --border-strong: oklch(0.74 0.07 76);
+  --muted-foreground: oklch(0.48 0.03 250);
+  --text-strong: oklch(0.18 0.02 262);
+  --text-muted: color-mix(in oklab, var(--foreground) 68%, transparent);
+  --text-soft: color-mix(in oklab, var(--foreground) 80%, transparent);
+  --accent: oklch(0.69 0.21 39);
+  --accent-foreground: oklch(0.99 0.01 95);
+  --accent-soft: oklch(0.8 0.11 215);
+  --accent-soft-foreground: oklch(0.99 0.01 95);
+  --danger: oklch(0.63 0.24 25);
+  --danger-foreground: oklch(0.99 0.01 95);
+  --shadow-color: color-mix(in srgb, black 22%, transparent);
+  --button-glow: color-mix(in srgb, var(--accent) 42%, transparent);
+  --shine-overlay: color-mix(in srgb, white 22%, transparent);
+  --card-frame-border: #f6d365;
+  --card-frame-bg: linear-gradient(180deg, #fff7cc 0%, #ffd86b 48%, #ffbe3b 100%);
+  --card-media-bg: linear-gradient(180deg, #fff7bf 0%, #ffe066 48%, #ffc107 100%);
+  --card-rarity-bg: #3d2f00;
+  --card-rarity-foreground: #fff3bf;
+  --card-type-bg: #fff1a8;
+  --card-type-foreground: #5b4300;
+  --card-type-border: #f7cf4d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-surface: var(--surface);
   --color-surface-strong: var(--surface-strong);
+  --color-surface-glass: var(--surface-glass);
+  --color-surface-glass-strong: var(--surface-glass-strong);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-surface-overlay-strong: var(--surface-overlay-strong);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-muted-foreground: var(--muted-foreground);
+  --color-text-strong: var(--text-strong);
+  --color-text-muted: var(--text-muted);
+  --color-text-soft: var(--text-soft);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-foreground: var(--accent-soft-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -37,10 +70,69 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at top, oklch(0.99 0.05 95), transparent 30%),
-    linear-gradient(180deg, oklch(0.98 0.02 95) 0%, oklch(0.93 0.03 90) 100%);
+    radial-gradient(circle at top, color-mix(in srgb, white 78%, transparent), transparent 30%),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--background) 88%, white) 0%,
+      color-mix(in oklab, var(--background) 92%, var(--surface-strong)) 100%
+    );
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.theme-card-electric {
+  --card-frame-border: #ffd447;
+  --card-frame-bg: linear-gradient(180deg, #fff3a1 0%, #ffd447 55%, #ffb300 100%);
+  --card-media-bg: linear-gradient(180deg, #fff7bf 0%, #ffe066 48%, #ffc107 100%);
+  --card-rarity-bg: #3d2f00;
+  --card-rarity-foreground: #fff3bf;
+  --card-type-bg: #fff1a8;
+  --card-type-foreground: #5b4300;
+  --card-type-border: #f7cf4d;
+}
+
+.theme-card-steel {
+  --card-frame-border: #9fb3c8;
+  --card-frame-bg: linear-gradient(180deg, #eff5fb 0%, #c7d3df 52%, #90a4b8 100%);
+  --card-media-bg: linear-gradient(180deg, #f8fbff 0%, #dbe5ef 52%, #aab8c7 100%);
+  --card-rarity-bg: #243342;
+  --card-rarity-foreground: #edf6ff;
+  --card-type-bg: #dbe6f2;
+  --card-type-foreground: #2c4053;
+  --card-type-border: #aebfd2;
+}
+
+.theme-card-rock {
+  --card-frame-border: #d6b06f;
+  --card-frame-bg: linear-gradient(180deg, #fff0d5 0%, #e7c38d 52%, #bc8b47 100%);
+  --card-media-bg: linear-gradient(180deg, #fff6e4 0%, #edd3ab 52%, #d2a363 100%);
+  --card-rarity-bg: #4f2f14;
+  --card-rarity-foreground: #fff2de;
+  --card-type-bg: #f3dfbf;
+  --card-type-foreground: #684019;
+  --card-type-border: #d1af74;
+}
+
+.theme-card-psychic {
+  --card-frame-border: #f2a4d9;
+  --card-frame-bg: linear-gradient(180deg, #ffe4f4 0%, #f6b6e4 52%, #e684c8 100%);
+  --card-media-bg: linear-gradient(180deg, #fff1fb 0%, #ffd0ef 52%, #f2a1db 100%);
+  --card-rarity-bg: #68244f;
+  --card-rarity-foreground: #ffe7f8;
+  --card-type-bg: #ffd7ef;
+  --card-type-foreground: #7b2f60;
+  --card-type-border: #e9a7cf;
+}
+
+.theme-card-fire {
+  --card-frame-border: #ffb36b;
+  --card-frame-bg: linear-gradient(180deg, #ffe1b8 0%, #ffb36b 52%, #ff7a45 100%);
+  --card-media-bg: linear-gradient(180deg, #fff0d9 0%, #ffc388 52%, #ff8a5c 100%);
+  --card-rarity-bg: #6a1f0e;
+  --card-rarity-foreground: #ffe8dc;
+  --card-type-bg: #ffd8c4;
+  --card-type-foreground: #85311d;
+  --card-type-border: #f0aa80;
 }
 
 @keyframes card-enter {
@@ -59,23 +151,23 @@ body {
   0%,
   100% {
     transform: translateY(0);
-    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    box-shadow: 0 0 0 transparent;
   }
 
   50% {
     transform: translateY(-1px);
-    box-shadow: 0 0 18px rgba(255, 255, 255, 0.22);
+    box-shadow: 0 0 18px color-mix(in srgb, white 22%, transparent);
   }
 }
 
 @keyframes button-glow {
   0%,
   100% {
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 12px 32px var(--shadow-color);
   }
 
   50% {
-    box-shadow: 0 14px 36px rgba(255, 168, 0, 0.3);
+    box-shadow: 0 14px 36px var(--button-glow);
   }
 }
 
@@ -112,7 +204,7 @@ body {
     115deg,
     transparent 0%,
     transparent 30%,
-    rgba(255, 255, 255, 0.22) 48%,
+    var(--shine-overlay) 48%,
     transparent 64%,
     transparent 100%
   );

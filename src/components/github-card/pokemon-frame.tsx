@@ -12,8 +12,8 @@ export function PokemonFrame({ children, className, frameClassName }: Props) {
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-4xl border-10 shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-transform duration-300 hover:-translate-y-1",
-        "bg-[linear-gradient(180deg,#fff7cc_0%,#ffd86b_48%,#ffbe3b_100%)] border-[#f6d365]",
+        "group relative overflow-hidden rounded-4xl border-10 shadow-[0_24px_80px_var(--shadow-color)] transition-transform duration-300 hover:-translate-y-1",
+        "border-[var(--card-frame-border)] bg-[image:var(--card-frame-bg)]",
         frameClassName,
         className,
       )}

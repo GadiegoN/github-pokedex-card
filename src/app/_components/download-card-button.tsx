@@ -44,7 +44,11 @@ export function DownloadCardButton({ targetId, fileName }: Props) {
   }
 
   return (
-    <Button onClick={handleDownload} disabled={status === "loading"}>
+    <Button
+      onClick={handleDownload}
+      disabled={status === "loading"}
+      variant="primary"
+    >
       <DownloadButtonLabel status={status} />
     </Button>
   );

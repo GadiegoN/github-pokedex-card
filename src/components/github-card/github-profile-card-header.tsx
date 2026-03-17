@@ -14,23 +14,23 @@ export function GithubProfileCardHeader({
   typeClassName,
 }: Props) {
   return (
-    <div className="flex items-start justify-between gap-3 rounded-3xl bg-white/55 p-2">
+    <div className="flex items-start justify-between gap-3 rounded-3xl bg-surface-glass p-2">
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-2xl font-black tracking-tight text-black">
+          <h2 className="text-2xl font-black tracking-tight text-text-strong">
             {data.displayName}
           </h2>
           <Badge className={typeClassName}>{getTypeLabel(data.cardType)}</Badge>
         </div>
 
-        <p className="truncate text-sm font-semibold text-black/65">
+        <p className="truncate text-sm font-semibold text-text-muted">
           @{data.username}
         </p>
       </div>
 
       <div className="flex shrink-0 flex-col items-end gap-2">
         <Badge className={rarityClassName}>{getRarityLabel(data.rarity)}</Badge>
-        <Badge className="animate-level-pulse bg-red-500 text-white">
+        <Badge className="animate-level-pulse border-transparent bg-danger text-danger-foreground">
           LV {data.level}
         </Badge>
       </div>

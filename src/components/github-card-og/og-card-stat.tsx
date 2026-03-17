@@ -1,9 +1,16 @@
 type Props = {
   label: string;
   value: string;
+  textStrong: string;
+  textMuted: string;
 };
 
-export function OgCardStat({ label, value }: Props) {
+export function OgCardStat({
+  label,
+  value,
+  textStrong,
+  textMuted,
+}: Props) {
   return (
     <div
       style={{
@@ -11,7 +18,7 @@ export function OgCardStat({ label, value }: Props) {
         flexDirection: "column",
         gap: 8,
         borderRadius: 24,
-        background: "rgba(0, 0, 0, 0.1)",
+        background: "rgba(0, 0, 0, 0.08)",
         padding: "18px 20px",
       }}
     >
@@ -21,7 +28,7 @@ export function OgCardStat({ label, value }: Props) {
           fontWeight: 700,
           letterSpacing: "0.24em",
           textTransform: "uppercase",
-          color: "rgba(0, 0, 0, 0.55)",
+          color: textMuted,
         }}
       >
         {label}
@@ -30,7 +37,7 @@ export function OgCardStat({ label, value }: Props) {
         style={{
           fontSize: 34,
           fontWeight: 900,
-          color: "#111111",
+          color: textStrong,
           lineHeight: 1,
         }}
       >

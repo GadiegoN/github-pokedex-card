@@ -48,7 +48,12 @@ export function ShareCardButton() {
   }
 
   return (
-    <Button type="button" onClick={handleShare} disabled={status === "sharing"}>
+    <Button
+      type="button"
+      onClick={handleShare}
+      disabled={status === "sharing"}
+      variant="secondary"
+    >
       <ShareCardButtonLabel status={status} />
     </Button>
   );

@@ -27,8 +27,8 @@ function buildFallbackImage(username: string) {
           alignItems: "center",
           justifyContent: "center",
           background:
-            "radial-gradient(circle at top, rgba(255,255,255,0.72), transparent 35%), linear-gradient(180deg, #fcf7e9 0%, #efe0bb 100%)",
-          color: "#111111",
+            "radial-gradient(circle at top, rgba(255,255,255,0.78), transparent 35%), linear-gradient(180deg, #f9f3e6 0%, #ead9b3 100%)",
+          color: "#1a1610",
           fontSize: 48,
           fontWeight: 900,
         }}

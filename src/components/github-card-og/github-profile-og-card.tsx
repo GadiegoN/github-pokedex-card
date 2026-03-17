@@ -27,7 +27,7 @@ export function GithubProfileOgCard({ data }: Props) {
         height: "100%",
         padding: 36,
         background:
-          "radial-gradient(circle at top, rgba(255,255,255,0.75), transparent 32%), linear-gradient(180deg, #fcf7e9 0%, #efe0bb 100%)",
+          "radial-gradient(circle at top, rgba(255,255,255,0.78), transparent 32%), linear-gradient(180deg, #f9f3e6 0%, #ead9b3 100%)",
       }}
     >
       <div
@@ -74,7 +74,7 @@ export function GithubProfileOgCard({ data }: Props) {
                 display: "flex",
                 flexDirection: "column",
                 borderRadius: 30,
-                background: "rgba(255,255,255,0.55)",
+                background: theme.panelColor,
                 padding: 18,
                 gap: 10,
               }}
@@ -99,7 +99,7 @@ export function GithubProfileOgCard({ data }: Props) {
                     style={{
                       fontSize: 38,
                       fontWeight: 900,
-                      color: "#101010",
+                      color: theme.textStrong,
                       lineHeight: 1,
                     }}
                   >
@@ -123,8 +123,8 @@ export function GithubProfileOgCard({ data }: Props) {
                   style={{
                     borderRadius: 999,
                     padding: "8px 16px",
-                    background: "#ef4444",
-                    color: "#ffffff",
+                    background: theme.dangerColor,
+                    color: theme.dangerTextColor,
                     fontSize: 18,
                     fontWeight: 900,
                   }}
@@ -137,7 +137,7 @@ export function GithubProfileOgCard({ data }: Props) {
                 style={{
                   fontSize: 22,
                   fontWeight: 700,
-                  color: "rgba(0,0,0,0.68)",
+                  color: theme.textMuted,
                 }}
               >
                 @{data.username}
@@ -158,7 +158,7 @@ export function GithubProfileOgCard({ data }: Props) {
                 style={{
                   fontSize: 28,
                   fontWeight: 800,
-                  color: "#111111",
+                  color: theme.textStrong,
                 }}
               >
                 {data.mainLanguage}
@@ -166,7 +166,7 @@ export function GithubProfileOgCard({ data }: Props) {
               <span
                 style={{
                   fontSize: 20,
-                  color: "rgba(0,0,0,0.76)",
+                  color: theme.textSoft,
                   lineHeight: 1.4,
                 }}
               >
@@ -175,7 +175,7 @@ export function GithubProfileOgCard({ data }: Props) {
               <span
                 style={{
                   fontSize: 18,
-                  color: "rgba(0,0,0,0.64)",
+                  color: theme.textMuted,
                 }}
               >
                 {data.yearsOnGithub} anos no GitHub • {data.following} seguindo
@@ -194,6 +194,8 @@ export function GithubProfileOgCard({ data }: Props) {
                   key={stat.label}
                   label={stat.label}
                   value={stat.value}
+                  textStrong={theme.textStrong}
+                  textMuted={theme.textMuted}
                 />
               ))}
             </div>
@@ -214,7 +216,7 @@ export function GithubProfileOgCard({ data }: Props) {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 32,
-                background: "rgba(255,255,255,0.36)",
+                background: theme.mediaOverlay,
                 border: "8px solid rgba(0,0,0,0.08)",
                 overflow: "hidden",
                 position: "relative",
@@ -247,7 +249,7 @@ export function GithubProfileOgCard({ data }: Props) {
                 justifyContent: "space-between",
                 alignItems: "center",
                 borderRadius: 26,
-                background: "rgba(255,255,255,0.5)",
+                background: theme.softPanelColor,
                 padding: "16px 20px",
               }}
             >
@@ -255,7 +257,7 @@ export function GithubProfileOgCard({ data }: Props) {
                 style={{
                   fontSize: 20,
                   fontWeight: 700,
-                  color: "rgba(0,0,0,0.68)",
+                  color: theme.textMuted,
                 }}
               >
                 github pokedex card
@@ -264,7 +266,7 @@ export function GithubProfileOgCard({ data }: Props) {
                 style={{
                   fontSize: 20,
                   fontWeight: 900,
-                  color: "#111111",
+                  color: theme.textStrong,
                 }}
               >
                 {data.rarity.toUpperCase()}

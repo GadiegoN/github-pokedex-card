@@ -13,10 +13,10 @@ type Props = {
 
 export function GithubProfileCardDetails({ data }: Props) {
   return (
-    <div className="mt-4 rounded-3xl bg-white/60 p-4 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-0.5">
-      <p className="line-clamp-2 text-sm leading-5 text-black/80">{data.bio}</p>
+    <div className="mt-4 rounded-3xl bg-surface-glass-strong p-4 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-0.5">
+      <p className="line-clamp-2 text-sm leading-5 text-text-soft">{data.bio}</p>
 
-      <div className="mt-3 grid gap-2 text-sm text-black/72">
+      <div className="mt-3 grid gap-2 text-sm text-text-muted">
         <div className="flex items-center gap-2">
           <MapPin className="size-4 shrink-0" />
           <span className="truncate">{data.location}</span>

@@ -38,7 +38,11 @@ export function GithubCardForm({ initialUsername = "" }: Props) {
         className="w-full"
       />
 
-      <Button type="submit" className="w-full sm:w-auto sm:min-w-36">
+      <Button
+        type="submit"
+        variant="soft"
+        className="w-full sm:w-auto sm:min-w-36"
+      >
         Gerar card
       </Button>
     </form>
