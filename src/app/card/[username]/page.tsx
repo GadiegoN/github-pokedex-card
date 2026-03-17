@@ -13,10 +13,22 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { username } = await params;
+  const imagePath = `/card/${encodeURIComponent(username)}/opengraph-image`;
 
   return {
     title: `Card de ${username}`,
     description: `Veja e compartilhe o card estilizado do perfil ${username} no GitHub.`,
+    openGraph: {
+      title: `Card de ${username}`,
+      description: `Veja e compartilhe o card estilizado do perfil ${username} no GitHub.`,
+      images: [imagePath],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Card de ${username}`,
+      description: `Veja e compartilhe o card estilizado do perfil ${username} no GitHub.`,
+      images: [imagePath],
+    },
   };
 }
 
