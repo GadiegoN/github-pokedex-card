@@ -1,188 +1,164 @@
 # GitHub Pokedex Card
 
-GitHub Pokedex Card é uma aplicação web que gera um **card estilizado inspirado em cartas de Pokémon** utilizando dados públicos de um perfil do GitHub.
-O card pode ser **baixado como imagem PNG** e compartilhado em redes sociais.
+GitHub Pokedex Card e uma aplicacao web que gera um card estilizado inspirado em cartas de Pokemon usando dados publicos de perfis do GitHub.
 
-A aplicação consulta a API pública do GitHub, transforma os dados do perfil em métricas visuais e renderiza um card com avatar, bio, estatísticas e um sistema simples de nível.
+Hoje o projeto ja inclui dois modos principais:
+
+- `Card Mode`: gera um card individual por usuario
+- `Battle Mode`: compara dois perfis em um duelo visual
+
+O resultado pode ser baixado como PNG, compartilhado por link e exibido com preview social automatica.
 
 ---
 
-## Preview
+## O que o projeto faz
 
-O card gerado inclui:
+### Card Mode
 
-- Nome e username do GitHub
-- Avatar do perfil
-- Bio e informações públicas
-- Estatísticas do perfil
-- Nível calculado a partir das métricas do usuário
-- Download do card em PNG
+- busca dados publicos de um perfil do GitHub
+- gera um card estilizado com avatar, bio e estatisticas
+- calcula `level`, `rarity`, `cardType` e atributos extras
+- mostra linguagem principal e atividade publica recente
+- permite baixar o card em PNG
+- permite compartilhar a URL do card
+
+### Battle Mode
+
+- compara dois perfis em uma rota dedicada
+- avalia metricas como `level`, `followers`, `repos`, `anos no GitHub` e `power`
+- define vencedor por categoria e score final
+- permite baixar o duelo como imagem
+- bloqueia comparacao do mesmo perfil contra ele mesmo
+
+---
+
+## Rotas principais
+
+- `/` -> home focada em gerar card
+- `/card/[username]` -> card compartilhavel de um usuario
+- `/battle` -> landing do modo batalha
+- `/battle/[leftUsername]/vs/[rightUsername]` -> resultado do duelo
+- `/card/[username]/opengraph-image` -> imagem social automatica
 
 ---
 
 ## Tecnologias utilizadas
 
-- **Next.js 16** — App Router
+- **Next.js 16** com App Router
 - **React**
 - **TypeScript**
 - **Tailwind CSS v4**
-- **html-to-image** — exportação do card para PNG
-- **Lucide React** — ícones
+- **html-to-image**
+- **Lucide React**
 - **GitHub REST API**
 
 ---
 
 ## Arquitetura
 
-O projeto foi estruturado para manter **separação clara entre domínio, UI e infraestrutura**.
+O projeto foi estruturado para manter separacao clara entre:
 
-```
+- `app` -> rotas e composicao de paginas
+- `components/ui` -> design system reutilizavel
+- `components/github-card` -> componentes do card individual
+- `components/github-battle` -> componentes do modo batalha
+- `components/github-card-og` -> composicao da Open Graph image
+- `lib/github` -> integracao com a API e regras de dominio
+- `lib/github/card` -> regras especificas do card
+- `lib/github/battle` -> regras especificas do duelo
+- `lib/utils` -> utilitarios genericos
+
+---
+
+## Estrutura resumida
+
+```text
 src
- ├─ app
- │   ├─ page.tsx
- │   ├─ layout.tsx
- │   ├─ globals.css
- │   └─ _components
- │
- ├─ components
- │   ├─ ui
- │   │   ├─ badge.tsx
- │   │   ├─ button.tsx
- │   │   ├─ card.tsx
- │   │   ├─ input.tsx
- │   │   └─ stat-chip.tsx
- │   │
- │   └─ github-card
- │       ├─ github-profile-card.tsx
- │       ├─ github-profile-card-shell.tsx
- │       ├─ github-profile-card-preview.tsx
- │       └─ pokemon-frame.tsx
- │
- └─ lib
-     ├─ github
-     │   ├─ api.ts
-     │   ├─ mapper.ts
-     │   └─ types.ts
-     │
-     └─ utils
-         ├─ cn.ts
-         └─ format-number.ts
+├─ app
+│  ├─ page.tsx
+│  ├─ battle
+│  │  ├─ page.tsx
+│  │  └─ [leftUsername]/vs/[rightUsername]/page.tsx
+│  ├─ card
+│  │  └─ [username]
+│  │     ├─ page.tsx
+│  │     └─ opengraph-image.tsx
+│  └─ _components
+│
+├─ components
+│  ├─ ui
+│  ├─ github-card
+│  ├─ github-battle
+│  └─ github-card-og
+│
+└─ lib
+   ├─ github
+   │  ├─ api.ts
+   │  ├─ mapper.ts
+   │  ├─ types.ts
+   │  ├─ card
+   │  ├─ battle
+   │  └─ activity
+   └─ utils
 ```
-
-### Organização
-
-- **`app`** — rotas e componentes ligados à página
-- **`components/ui`** — design system reutilizável
-- **`components/github-card`** — componentes específicos do card
-- **`lib/github`** — integração com a API do GitHub
-- **`lib/utils`** — utilitários genéricos
 
 ---
 
-## Fluxo da aplicação
+## Dados usados do GitHub
 
-1. O usuário informa um **username do GitHub**.
-2. A aplicação consulta a **GitHub REST API**.
-3. Os dados retornados são transformados em um **modelo interno**.
-4. O card é renderizado utilizando componentes reutilizáveis.
-5. O usuário pode **baixar o card como PNG**.
+O projeto consome dados publicos do GitHub usando principalmente:
+
+- `GET /users/{username}`
+- `GET /users/{username}/repos`
+- `GET /users/{username}/events/public`
+
+Com isso, o app monta:
+
+- dados basicos do perfil
+- estatisticas gerais
+- linguagem principal
+- atividade publica recente
+- comparacao entre perfis
 
 ---
 
-## Instalação
+## Design system
 
-Clone o repositório:
+O visual do projeto foi organizado com tokens globais em `:root`, incluindo:
 
-```
-git clone https://github.com/seu-usuario/github-pokedex-card.git
-```
+- cores base da interface
+- superficies e overlays
+- tokens de texto
+- estados de acao
+- tokens especificos dos temas do card
 
-Entre na pasta do projeto:
+O componente `Button` tambem passou a suportar variantes visuais para evitar botoes com o mesmo peso em todos os contextos.
 
-```
-cd github-pokedex-card
-```
+---
 
-Instale as dependências:
+## Instalacao
 
-```
+```bash
 npm install
-```
-
-Inicie o servidor de desenvolvimento:
-
-```
 npm run dev
 ```
 
-A aplicação estará disponível em:
+A aplicacao fica disponivel em:
 
-```
+```text
 http://localhost:3000
 ```
 
 ---
 
-## API utilizada
+## Estado atual
 
-O projeto utiliza a **GitHub REST API** para obter dados públicos do perfil:
+O backlog principal do projeto foi concluido.
 
-```
-GET https://api.github.com/users/{username}
-```
-
-Informações utilizadas:
-
-- avatar
-- nome
-- bio
-- localização
-- empresa
-- website
-- número de repositórios
-- seguidores
-- seguindo
-- data de criação da conta
+As entregas originalmente previstas ja foram implementadas, com excecao da exportacao vertical para stories, que foi descartada por decisao de produto.
 
 ---
 
-## Sistema de nível
+## Licenca
 
-O nível do card é calculado a partir de algumas métricas do perfil:
-
-- número de repositórios
-- seguidores
-- tempo de conta no GitHub
-- número de contas seguidas
-
-Esses dados são combinados para gerar um valor numérico que representa o **nível do desenvolvedor no card**.
-
----
-
-## Exportação do card
-
-A exportação da imagem utiliza a biblioteca:
-
-```
-html-to-image
-```
-
-O componente captura o DOM do card e gera um **PNG em alta resolução**, pronto para download.
-
----
-
-## Melhorias futuras
-
-Algumas melhorias planejadas para o projeto:
-
-- sistema de **raridade do card** (common, rare, legendary)
-- suporte a **linguagens mais utilizadas**
-- exibição de **estatísticas de contribuição**
-- exportação em **formato vertical para stories**
-- geração de **Open Graph image para compartilhamento**
-
----
-
-## Licença
-
-Este projeto está disponível sob a licença MIT.
+Este projeto esta disponivel sob a licenca MIT.
