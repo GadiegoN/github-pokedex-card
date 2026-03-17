@@ -1,7 +1,6 @@
 import { DownloadCardButton } from "./download-card-button";
-import { GithubCardPageHero } from "./github-card-page-hero";
+import { GithubBattlePageHero } from "./github-battle-page-hero";
 import { ShareCardButton } from "./share-card-button";
-import { GithubBattleForm } from "./github-battle-form";
 import { GithubBattleHero } from "@/components/github-battle/github-battle-hero";
 import { GithubBattlePreview } from "@/components/github-battle/github-battle-preview";
 import { GithubBattleSummary } from "@/components/github-battle/github-battle-summary";
@@ -17,11 +16,7 @@ export function GithubBattlePageContent({ result }: Props) {
       <div className="mx-auto grid max-w-7xl gap-10">
         <section className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
           <div>
-            <GithubCardPageHero
-              initialUsername={result.leftProfile.username}
-              showBattleForm={false}
-            />
-            <GithubBattleForm
+            <GithubBattlePageHero
               initialLeftUsername={result.leftProfile.username}
               initialRightUsername={result.rightProfile.username}
             />
