@@ -17,9 +17,9 @@ function getSideClassName(isWinner: boolean) {
 
 export function GithubBattleMetricRow({ metric }: Props) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_120px_minmax(0,1fr)] items-center gap-3 rounded-3xl bg-surface-glass p-3">
+    <div className="grid grid-cols-[minmax(0,1fr)_5.5rem_minmax(0,1fr)] items-center gap-2 rounded-3xl bg-surface-glass p-2 sm:grid-cols-[minmax(0,1fr)_120px_minmax(0,1fr)] sm:gap-3 sm:p-3">
       <div className={getSideClassName(metric.winner === "left")}>
-        {formatCompactNumber(metric.leftValue)}
+        {metric.leftDisplayValue ?? formatCompactNumber(metric.leftValue)}
       </div>
       <div className="text-center">
         <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-text-muted">
@@ -27,7 +27,7 @@ export function GithubBattleMetricRow({ metric }: Props) {
         </p>
       </div>
       <div className={getSideClassName(metric.winner === "right")}>
-        {formatCompactNumber(metric.rightValue)}
+        {metric.rightDisplayValue ?? formatCompactNumber(metric.rightValue)}
       </div>
     </div>
   );

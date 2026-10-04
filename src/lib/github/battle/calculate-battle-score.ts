@@ -6,11 +6,11 @@ export function calculateBattleScore(
 ) {
   return metrics.reduce((score, metric) => {
     if (metric.winner === side) {
-      return score + 1;
+      return score + metric.scoreWeight;
     }
 
     if (metric.winner === "tie") {
-      return score + 0.5;
+      return score + metric.scoreWeight * 0.5;
     }
 
     return score;
