@@ -18,7 +18,11 @@ O projeto também oferece um modo de batalha para comparar dois perfis.
 
 ### Battle Mode
 
-Compara dois perfis em uma rota compartilhável. O duelo atual compara nível, seguidores, repositórios, anos no GitHub e poder. Os mesmos dados estruturados de classe, atributos, raridade e progressão podem ser usados para ampliar as métricas de batalha.
+Compara dois perfis em uma rota compartilhável. O duelo compara nível, XP, raridade, os cinco atributos, quantidade de linguagens, seguidores, repositórios e anos no GitHub. Classe e linguagens mais frequentes também aparecem como comparação textual. Para não contar progressão três vezes, Level/XP/Power juntos valem o peso de uma categoria no placar; os cinco atributos também dividem o peso de uma categoria. Empates contam metade do peso.
+
+### Histórico local
+
+Ao abrir a ficha, o navegador registra um snapshot do ano atual com nível, XP, classe, raridade e atributos. Visitas posteriores no mesmo ano atualizam esse snapshot; anos anteriores são mantidos. O histórico pertence ao navegador e perfil onde foi criado, não é compartilhado pelo link e pode ser apagado na própria ficha. Não há backend para snapshots.
 
 ## Como os dados são obtidos
 
@@ -30,7 +34,7 @@ O app usa a GitHub REST API sem exigir login:
 
 O perfil, os repositórios e os eventos são combinados no serviço de `src/lib/github`. As respostas são armazenadas em cache por uma hora.
 
-**Limites dos dados:** a lista de repositórios é uma amostra, não necessariamente o histórico completo do perfil. Stars, forks e distribuição de linguagens são calculados somente sobre os repositórios próprios dessa amostra. Atividade usa os eventos públicos disponíveis e considera os últimos 30 dias. O app não consulta o gráfico de contribuições do GitHub e, portanto, não inventa uma contagem anual de contribuições. Repositórios privados não são acessíveis sem autorização.
+**Limites dos dados:** a lista de repositórios é uma amostra de até 100 itens, ordenados pela atualização mais recente, não necessariamente o histórico completo do perfil. O card informa quantos itens foram retornados e quantos repositórios próprios entraram nos cálculos. Stars, forks e distribuição de linguagens são calculados somente sobre os repositórios próprios da amostra. Atividade usa os eventos públicos disponíveis e considera os últimos 30 dias. A API REST pública usada aqui não fornece o gráfico anual de contribuições; o app não inventa essa contagem. Repositórios privados não são acessíveis sem autorização.
 
 ## Regras do personagem
 
@@ -74,7 +78,7 @@ A classe avalia linguagens observadas e, quando disponíveis, nomes, descriçõe
 - **Open Source Paladin:** projetos próprios com pelo menos 25 stars ou 10 forks.
 - **Code Wizard:** fallback honesto quando não há evidência suficiente para especializar a classe.
 
-Se mais de uma classe for elegível, vence a que tiver maior pontuação de evidências; os critérios observados são incluídos na ficha. A classe não é sorteada.
+Se mais de uma classe for elegível, vence a que tiver maior pontuação de evidências; especializações técnicas têm prioridade sobre a classe de adoção comunitária. Open Source Paladin é usada quando não há outra especialização sustentada pelos dados. Os critérios observados são incluídos na ficha. A classe não é sorteada.
 
 ### Raridade
 
@@ -142,7 +146,7 @@ npm run dev
 
 Abra <http://localhost:3000>, informe um username público do GitHub e gere a ficha. Na página do perfil, use **Baixar PNG** para exportar a mesma ficha exibida na tela.
 
-## Testes e build
+## Testes, lint e build
 
 ```bash
 npm run lint
@@ -150,11 +154,15 @@ npm test
 npm run build
 ```
 
-Os testes cobrem fórmulas, limites, perfis com poucos e muitos dados, ausência de repositórios, classificação, raridade e XP. O lint usa as regras oficiais do Next.js.
+Os testes cobrem fórmulas, limites, perfis com poucos e muitos dados, ausência de repositórios, classificação, raridade, XP, comparação e snapshots anuais. O lint usa as regras oficiais do Next.js.
+
+## Dependências e segurança
+
+Next.js, `eslint-config-next` e Vitest são atualizados como um conjunto compatível. O npm audit ainda sinaliza advisories altos em dependências de desenvolvimento transitivas do `eslint-config-next` (braces/fast-glob/micromatch); a correção automática sugerida rebaixaria a configuração do Next para a linha 14, incompatível com este app. Não se aplica downgrade forçado. Esses avisos devem ser reavaliados quando o upstream publicar uma atualização corrigida compatível.
 
 ## Histórico e evolução
 
-Os cálculos recebem um `DeveloperProfile` serializável e produzem resultados independentes. Essa separação permite armazenar snapshots anuais e comparar atributos de dois perfis no futuro, sem exigir backend ou persistência nesta versão.
+Os cálculos recebem um `DeveloperProfile` serializável e produzem resultados independentes. A ficha já mantém snapshots anuais versionados no `localStorage`, separados por username: uma nova visita atualiza o ano corrente, anos anteriores permanecem e o botão da ficha apaga o histórico daquele perfil. Os dados ficam somente no navegador, sem backend ou sincronização. O Battle Mode também compara classe, raridade, atributos e linguagens dos dois perfis.
 
 ## Licença
 
