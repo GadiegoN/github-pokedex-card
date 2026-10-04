@@ -292,7 +292,10 @@ export function determineDeveloperClass(
     .map((candidate) => candidate.evaluate(profile))
     .filter((result): result is DeveloperClass => result !== null)
     .sort((left, right) => right.score - left.score);
-  const bestMatch = matchedClasses[0];
+  const bestMatch =
+    matchedClasses.find(
+      (candidate) => candidate.id !== "open-source-paladin",
+    ) ?? matchedClasses[0];
 
   if (bestMatch) {
     return bestMatch;

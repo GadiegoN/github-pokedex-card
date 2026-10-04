@@ -211,16 +211,29 @@ describe("determineDeveloperClass", () => {
     expect(result.criteria[0]).toContain("não há linguagens");
   });
 
-  it("classifies strong community adoption from actual stars and forks", () => {
+  it("classifies community adoption when no technical specialization is detected", () => {
     const result = determineDeveloperClass(
       profile({
         repositories: [
-          repository("TypeScript", { stars: 25, forks: 10 }),
+          repository(null, { stars: 25, forks: 10 }),
         ],
       }),
     );
 
     expect(result.id).toBe("open-source-paladin");
+  });
+
+  it("prefers a language-based specialization over community popularity", () => {
+    const result = determineDeveloperClass(
+      profile({
+        repositories: [
+          repository("TypeScript", { stars: 10_000, forks: 2_000 }),
+          repository("Python"),
+        ],
+      }),
+    );
+
+    expect(result.id).toBe("full-stack-adventurer");
   });
 });
 
