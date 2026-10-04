@@ -5,7 +5,7 @@ type Props = {
 const labels = {
   idle: "Compartilhar",
   sharing: "Compartilhando...",
-  success: "Link copiado",
+  success: "Pronto",
   error: "Falha ao compartilhar",
 } as const;
 
