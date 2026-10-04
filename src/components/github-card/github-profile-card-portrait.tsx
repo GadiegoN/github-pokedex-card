@@ -13,9 +13,9 @@ export function GithubProfileCardPortrait({
 }: Props) {
   return (
     <div
-      className={`mt-4 overflow-hidden rounded-[1.75rem] border-[6px] border-surface-overlay-strong p-3 ${mediaClassName}`}
+      className={`overflow-hidden rounded-3xl border-4 border-surface-overlay-strong p-1 ${mediaClassName}`}
     >
-      <div className="relative aspect-[4/4.35] overflow-hidden rounded-[1.25rem] bg-surface-overlay">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-surface-overlay">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,var(--surface)_0%,transparent_55%)]" />
 
         <Image

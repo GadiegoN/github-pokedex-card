@@ -19,6 +19,7 @@ export function GithubCardPageHero({ initialUsername = "" }: Props) {
             alt="GitHub Trainer Card"
             fill
             priority
+            sizes="(max-width: 640px) 80px, 96px"
             className="object-contain drop-shadow-xl"
           />
         </div>
@@ -29,12 +30,12 @@ export function GithubCardPageHero({ initialUsername = "" }: Props) {
       </div>
 
       <h1 className="mt-6 text-balance text-3xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-        Gere um card de GitHub pronto para compartilhar
+        Transforme seu GitHub em uma ficha de personagem
       </h1>
 
       <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base lg:mx-0 lg:text-lg">
-        Busque estatisticas publicas do perfil, monte um card estilizado e
-        exporte uma imagem pronta para compartilhar.
+        Descubra sua classe, atributos e progressão a partir dos dados públicos
+        do seu perfil. Baixe e compartilhe sua ficha.
       </p>
 
       <div className="mt-8">

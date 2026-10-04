@@ -1,36 +1,34 @@
 import { Badge } from "@/components/ui/badge";
-import { getRarityLabel, getTypeLabel } from "./card-theme";
+import { getRarityLabel } from "./card-theme";
 import type { GithubProfileCardData } from "@/lib/github/types";
 
 type Props = {
   data: GithubProfileCardData;
   rarityClassName: string;
-  typeClassName: string;
 };
 
 export function GithubProfileCardHeader({
   data,
   rarityClassName,
-  typeClassName,
 }: Props) {
   return (
-    <div className="flex items-start justify-between gap-3 rounded-3xl bg-surface-glass p-2">
+    <div className="min-w-0 rounded-3xl bg-surface-glass p-3">
       <div className="min-w-0">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-2xl font-black tracking-tight text-text-strong">
-            {data.displayName}
-          </h2>
-          <Badge className={typeClassName}>{getTypeLabel(data.cardType)}</Badge>
-        </div>
+        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-text-muted">
+          GitHub Adventurer
+        </p>
+        <h2 className="mt-1 truncate text-xl font-black tracking-tight text-text-strong sm:text-2xl">
+          {data.displayName}
+        </h2>
 
         <p className="truncate text-sm font-semibold text-text-muted">
           @{data.username}
         </p>
       </div>
 
-      <div className="flex shrink-0 flex-col items-end gap-2">
+      <div className="mt-2 flex flex-wrap gap-1.5">
         <Badge className={rarityClassName}>{getRarityLabel(data.rarity)}</Badge>
-        <Badge className="animate-level-pulse border-transparent bg-danger text-danger-foreground">
+        <Badge className="border-transparent bg-danger text-danger-foreground">
           LV {data.level}
         </Badge>
       </div>

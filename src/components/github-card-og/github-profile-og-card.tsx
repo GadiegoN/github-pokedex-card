@@ -1,6 +1,6 @@
 import type { GithubProfileCardData } from "@/lib/github/types";
 import { formatCompactNumber } from "@/lib/utils/format-number";
-import { getOgCardTheme, getOgTypeLabel } from "./og-card-theme";
+import { getOgCardTheme } from "./og-card-theme";
 import { OgCardStat } from "./og-card-stat";
 
 type Props = {
@@ -11,8 +11,14 @@ function getTopStats(data: GithubProfileCardData) {
   return [
     { label: "Repos", value: formatCompactNumber(data.publicRepos) },
     { label: "Followers", value: formatCompactNumber(data.followers) },
-    { label: "Level", value: formatCompactNumber(data.level) },
+    { label: "Stars", value: formatCompactNumber(data.starsReceived) },
   ];
+}
+
+function getDisplayNameSize(displayName: string) {
+  if (displayName.length > 24) return 24;
+  if (displayName.length > 16) return 28;
+  return 34;
 }
 
 export function GithubProfileOgCard({ data }: Props) {
@@ -25,7 +31,7 @@ export function GithubProfileOgCard({ data }: Props) {
         display: "flex",
         width: "100%",
         height: "100%",
-        padding: 36,
+        padding: 24,
         background:
           "radial-gradient(circle at top, rgba(255,255,255,0.78), transparent 32%), linear-gradient(180deg, #f9f3e6 0%, #ead9b3 100%)",
       }}
@@ -34,8 +40,8 @@ export function GithubProfileOgCard({ data }: Props) {
         style={{
           display: "flex",
           width: "100%",
-          borderRadius: 40,
-          border: `14px solid ${theme.borderColor}`,
+          borderRadius: 36,
+          border: `12px solid ${theme.borderColor}`,
           background: theme.background,
           boxShadow: "0 24px 80px rgba(0, 0, 0, 0.22)",
           overflow: "hidden",
@@ -56,8 +62,8 @@ export function GithubProfileOgCard({ data }: Props) {
           style={{
             display: "flex",
             flex: 1,
-            padding: 30,
-            gap: 28,
+            padding: 24,
+            gap: 20,
             zIndex: 1,
           }}
         >
@@ -65,82 +71,56 @@ export function GithubProfileOgCard({ data }: Props) {
             style={{
               display: "flex",
               flexDirection: "column",
-              width: 390,
-              gap: 20,
+              width: 350,
+              gap: 12,
             }}
           >
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
-                borderRadius: 30,
+                borderRadius: 26,
                 background: theme.panelColor,
-                padding: 18,
-                gap: 10,
+                padding: 14,
+                gap: 7,
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 16,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 38,
-                      fontWeight: 900,
-                      color: theme.textStrong,
-                      lineHeight: 1,
-                    }}
-                  >
-                    {data.displayName}
-                  </span>
-                  <span
-                    style={{
-                      borderRadius: 999,
-                      padding: "8px 14px",
-                      background: theme.badgeColor,
-                      color: theme.badgeTextColor,
-                      fontSize: 18,
-                      fontWeight: 800,
-                    }}
-                  >
-                    {getOgTypeLabel(data.cardType)}
-                  </span>
-                </div>
-
-                <span
-                  style={{
-                    borderRadius: 999,
-                    padding: "8px 16px",
-                    background: theme.dangerColor,
-                    color: theme.dangerTextColor,
-                    fontSize: 18,
-                    fontWeight: 900,
-                  }}
-                >
-                  LV {data.level}
-                </span>
-              </div>
-
               <span
                 style={{
-                  fontSize: 22,
+                  fontSize: getDisplayNameSize(data.displayName),
+                  fontWeight: 900,
+                  color: theme.textStrong,
+                  lineHeight: 1.1,
+                }}
+              >
+                {data.displayName}
+              </span>
+              <span
+                style={{
+                  fontSize: 18,
                   fontWeight: 700,
                   color: theme.textMuted,
                 }}
               >
                 @{data.username}
+              </span>
+              <span
+                style={{
+                  fontSize: 18,
+                  fontWeight: 800,
+                  color: theme.textStrong,
+                }}
+              >
+                {data.developerClass.name}
+              </span>
+              <span
+                style={{
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: theme.textMuted,
+                }}
+              >
+                Nível {data.level} · {data.developerLevel.title}
               </span>
             </div>
 
@@ -148,15 +128,15 @@ export function GithubProfileOgCard({ data }: Props) {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                borderRadius: 30,
+                borderRadius: 26,
                 background: theme.panelColor,
-                padding: 20,
-                gap: 14,
+                padding: 16,
+                gap: 9,
               }}
             >
               <span
                 style={{
-                  fontSize: 28,
+                  fontSize: 24,
                   fontWeight: 800,
                   color: theme.textStrong,
                 }}
@@ -165,28 +145,66 @@ export function GithubProfileOgCard({ data }: Props) {
               </span>
               <span
                 style={{
-                  fontSize: 20,
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: theme.textStrong,
+                }}
+              >
+                {data.developerLevel.totalXp.toLocaleString("pt-BR")} XP total
+              </span>
+              <div
+                style={{
+                  display: "flex",
+                  height: 10,
+                  borderRadius: 999,
+                  background: "rgba(0,0,0,0.12)",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${data.developerLevel.progress}%`,
+                    height: "100%",
+                    background: theme.dangerColor,
+                  }}
+                />
+              </div>
+              <span
+                style={{
+                  fontSize: 14,
+                  color: theme.textMuted,
+                }}
+              >
+                {data.developerLevel.xpIntoLevel.toLocaleString("pt-BR")} /{" "}
+                {data.developerLevel.xpForNextLevel.toLocaleString("pt-BR")} XP
+                · {data.developerLevel.progress}%
+              </span>
+              <span
+                style={{
+                  fontSize: 16,
                   color: theme.textSoft,
-                  lineHeight: 1.4,
+                  lineHeight: 1.25,
+                  maxHeight: 40,
+                  overflow: "hidden",
                 }}
               >
                 {data.bio}
               </span>
               <span
                 style={{
-                  fontSize: 18,
+                  fontSize: 14,
                   color: theme.textMuted,
                 }}
               >
-                {data.yearsOnGithub} anos no GitHub • {data.following} seguindo
+                {data.yearsOnGithub} anos no GitHub ·{" "}
+                {data.recentActivity.eventsLast30Days} eventos públicos recentes
               </span>
             </div>
 
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-                gap: 14,
+                display: "flex",
+                gap: 10,
               }}
             >
               {stats.map((stat) => (
@@ -206,7 +224,7 @@ export function GithubProfileOgCard({ data }: Props) {
               display: "flex",
               flex: 1,
               flexDirection: "column",
-              gap: 18,
+              gap: 16,
             }}
           >
             <div
@@ -215,13 +233,15 @@ export function GithubProfileOgCard({ data }: Props) {
                 flex: 1,
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 32,
+                borderRadius: 30,
                 background: theme.mediaOverlay,
                 border: "8px solid rgba(0,0,0,0.08)",
                 overflow: "hidden",
                 position: "relative",
               }}
             >
+              {/* Satori's ImageResponse requires an HTML img for remote images. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={data.avatarUrl}
                 alt={data.displayName}
@@ -248,9 +268,9 @@ export function GithubProfileOgCard({ data }: Props) {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                borderRadius: 26,
+                borderRadius: 24,
                 background: theme.softPanelColor,
-                padding: "16px 20px",
+                padding: "14px 18px",
               }}
             >
               <span
@@ -260,7 +280,7 @@ export function GithubProfileOgCard({ data }: Props) {
                   color: theme.textMuted,
                 }}
               >
-                github pokedex card
+                GITHUB ADVENTURER
               </span>
               <span
                 style={{

@@ -23,6 +23,7 @@ export function GithubBattlePageHero({
             alt="GitHub Trainer Card Battle"
             fill
             priority
+            sizes="(max-width: 640px) 80px, 96px"
             className="object-contain drop-shadow-xl"
           />
         </div>

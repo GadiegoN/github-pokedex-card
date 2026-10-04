@@ -1,10 +1,6 @@
 import {
-  BriefcaseBusiness,
   Github,
-  Link as LinkIcon,
-  MapPin,
   Radio,
-  Sparkles,
 } from "lucide-react";
 import type { GithubProfileCardData } from "@/lib/github/types";
 
@@ -14,43 +10,19 @@ type Props = {
 
 export function GithubProfileCardDetails({ data }: Props) {
   return (
-    <div className="mt-4 rounded-3xl bg-surface-glass-strong p-4 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-0.5">
+    <div className="mt-3 rounded-3xl bg-surface-glass-strong p-4 backdrop-blur-sm">
       <p className="line-clamp-2 text-sm leading-5 text-text-soft">{data.bio}</p>
 
-      <div className="mt-3 grid gap-2 text-sm text-text-muted">
-        <div className="flex items-center gap-2">
-          <MapPin className="size-4 shrink-0" />
-          <span className="truncate">{data.location}</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <BriefcaseBusiness className="size-4 shrink-0" />
-          <span className="truncate">{data.company}</span>
-        </div>
-
-        <div className="flex items-center gap-2">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-text-muted">
+        <span className="flex items-center gap-1.5">
           <Github className="size-4 shrink-0" />
-          <span>{data.yearsOnGithub} anos no GitHub</span>
-        </div>
+          {data.yearsOnGithub} anos no GitHub
+        </span>
 
-        <div className="flex items-center gap-2">
-          <Sparkles className="size-4 shrink-0" />
-          <span className="truncate">{data.mainLanguage}</span>
-        </div>
-
-        <div className="flex items-center gap-2">
+        <span className="flex items-center gap-1.5">
           <Radio className="size-4 shrink-0" />
-          <span className="truncate">
-            {data.recentActivity.eventsLast30Days} eventos publicos em 30 dias
-          </span>
-        </div>
-
-        {data.website ? (
-          <div className="flex items-center gap-2">
-            <LinkIcon className="size-4 shrink-0" />
-            <span className="truncate">{data.website}</span>
-          </div>
-        ) : null}
+          {data.recentActivity.eventsLast30Days} eventos públicos · 30 dias
+        </span>
       </div>
     </div>
   );

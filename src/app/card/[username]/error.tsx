@@ -11,7 +11,7 @@ export default function CardPageError({
   return (
     <RouteFeedback
       title="Não foi possível carregar o card"
-      description="O GitHub pode estar temporariamente indisponível. Tente novamente em instantes."
+      description="O GitHub pode estar temporariamente indisponível ou ter atingido o limite de consultas. Tente novamente em instantes."
       actionLabel="Tentar novamente"
       onRetry={reset}
     />
