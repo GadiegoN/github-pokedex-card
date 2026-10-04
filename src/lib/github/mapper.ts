@@ -72,6 +72,7 @@ export function mapGithubUserToCardData(
     developerStats,
     languages,
     analyzedRepositories: ownedRepositories.length,
+    returnedRepositories: repositories.length,
     starsReceived: ownedRepositories.reduce(
       (total, repository) => total + repository.stars,
       0,

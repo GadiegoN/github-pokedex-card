@@ -11,7 +11,7 @@ export function GithubProfileCardGithubStats({ data }: Props) {
     <section
       className="mt-3"
       aria-label="Estatísticas públicas do GitHub"
-      title={`Stars e forks somados nos ${data.analyzedRepositories} repositórios próprios retornados pela amostra mais recente da API.`}
+      title={`A API retornou ${data.returnedRepositories} repositórios. ${data.analyzedRepositories} deles são próprios e usados para calcular linguagens e stars.`}
     >
       <h3 className="sr-only">Estatísticas do GitHub</h3>
       <div className="grid grid-cols-2 gap-2">
@@ -33,9 +33,10 @@ export function GithubProfileCardGithubStats({ data }: Props) {
         />
       </div>
       <p className="mt-2 text-center text-[9px] leading-4 text-text-muted">
-        Linguagens e stars consideram até {data.analyzedRepositories} dos
-        repositórios públicos mais recentes; atividade considera eventos
-        públicos recentes.
+        {data.analyzedRepositories} próprios analisados de{" "}
+        {data.returnedRepositories} retornados (até 100) entre{" "}
+        {data.publicRepos} públicos. Linguagens e stars usam essa amostra;
+        atividade usa eventos públicos recentes.
       </p>
     </section>
   );

@@ -74,6 +74,7 @@ export type GithubProfileCardData = {
   developerStats: DeveloperStats;
   languages: DeveloperLanguage[];
   analyzedRepositories: number;
+  returnedRepositories: number;
   starsReceived: number;
   forksReceived: number;
   cardType: GithubCardType;
