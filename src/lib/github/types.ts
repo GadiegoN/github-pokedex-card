@@ -1,3 +1,11 @@
+import type {
+  DeveloperClass,
+  DeveloperLanguage,
+  DeveloperLevel,
+  DeveloperRarity,
+  DeveloperStats,
+} from "./developer/types";
+
 export type GithubUserResponse = {
   login: string;
   name: string | null;
@@ -16,6 +24,11 @@ export type GithubUserResponse = {
 export type GithubRepoResponse = {
   language: string | null;
   fork: boolean;
+  name?: string;
+  description?: string | null;
+  topics?: string[];
+  stargazers_count?: number;
+  forks_count?: number;
 };
 
 export type GithubUserEventResponse = {
@@ -26,7 +39,7 @@ export type GithubUserEventResponse = {
   };
 };
 
-export type GithubCardRarity = "common" | "rare" | "epic" | "legendary";
+export type GithubCardRarity = DeveloperRarity;
 
 export type GithubCardType =
   | "electric"
@@ -34,11 +47,6 @@ export type GithubCardType =
   | "rock"
   | "psychic"
   | "fire";
-
-export type GithubProfileStat = {
-  label: string;
-  value: number;
-};
 
 export type GithubRecentActivity = {
   eventsLast30Days: number;
@@ -61,8 +69,14 @@ export type GithubProfileCardData = {
   yearsOnGithub: number;
   level: number;
   rarity: GithubCardRarity;
+  developerLevel: DeveloperLevel;
+  developerClass: DeveloperClass;
+  developerStats: DeveloperStats;
+  languages: DeveloperLanguage[];
+  analyzedRepositories: number;
+  starsReceived: number;
+  forksReceived: number;
   cardType: GithubCardType;
   mainLanguage: string;
   recentActivity: GithubRecentActivity;
-  stats: GithubProfileStat[];
 };

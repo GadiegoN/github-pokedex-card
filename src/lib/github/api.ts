@@ -3,7 +3,6 @@ import { fetchGithubUserEvents } from "./fetch-github-user-events";
 import { mapGithubUserToCardData } from "./mapper";
 import { fetchGithubUser } from "./fetch-github-user";
 import { fetchGithubUserRepos } from "./fetch-github-user-repos";
-import { resolveMainLanguage } from "./resolve-main-language";
 import type { GithubProfileCardData } from "./types";
 
 export async function getGithubProfileCardData(
@@ -17,10 +16,11 @@ export async function getGithubProfileCardData(
     return null;
   }
 
-  const repos = await fetchGithubUserRepos(username);
-  const events = await fetchGithubUserEvents(username);
-  const mainLanguage = resolveMainLanguage(repos);
+  const [repos, events] = await Promise.all([
+    fetchGithubUserRepos(username),
+    fetchGithubUserEvents(username),
+  ]);
   const recentActivity = buildRecentActivity(events);
 
-  return mapGithubUserToCardData(user, mainLanguage, recentActivity);
+  return mapGithubUserToCardData(user, repos, recentActivity);
 }
