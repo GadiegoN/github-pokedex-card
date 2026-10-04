@@ -1,6 +1,7 @@
 import { DownloadCardButton } from "./download-card-button";
 import { GithubCardPageHero } from "./github-card-page-hero";
 import { ShareCardButton } from "./share-card-button";
+import { DeveloperHistoryPanel } from "./developer-history";
 import { GithubProfileCardPreview } from "@/components/github-card/github-profile-card-preview";
 import type { GithubProfileCardData } from "@/lib/github/types";
 
@@ -30,8 +31,9 @@ export function GithubCardPageContent({
           ) : null}
         </section>
 
-        <section className="order-2 flex items-center justify-center">
+        <section className="order-2 flex flex-col items-center gap-4">
           <GithubProfileCardPreview data={profile} />
+          {profile ? <DeveloperHistoryPanel profile={profile} /> : null}
         </section>
       </div>
     </main>

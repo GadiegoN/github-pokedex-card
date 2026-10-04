@@ -30,6 +30,11 @@ export default function PrivacyPage() {
             No private GitHub data is requested by this project.
           </p>
           <p>
+            The developer history is saved only in this browser&apos;s local
+            storage. It is not sent to the server and can be deleted from the
+            profile page.
+          </p>
+          <p>
             If this policy changes in the future, this page should be updated.
           </p>
         </div>
