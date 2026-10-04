@@ -64,7 +64,6 @@ export function GithubProfileOgCard({ data }: Props) {
             flex: 1,
             padding: 24,
             gap: 20,
-            zIndex: 1,
           }}
         >
           <div
