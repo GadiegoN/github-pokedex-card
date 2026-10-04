@@ -1,164 +1,161 @@
-# GitHub Pokedex Card
+# GitHub Pokédex Card
 
-GitHub Pokedex Card e uma aplicacao web que gera um card estilizado inspirado em cartas de Pokemon usando dados publicos de perfis do GitHub.
+O GitHub Pokédex Card transforma informações públicas de um perfil do GitHub em uma ficha visual de personagem desenvolvedor. A ficha combina classe, atributos, progressão, raridade, linguagens e estatísticas públicas em um card que pode ser compartilhado ou baixado como PNG.
 
-Hoje o projeto ja inclui dois modos principais:
+O projeto também oferece um modo de batalha para comparar dois perfis.
 
-- `Card Mode`: gera um card individual por usuario
-- `Battle Mode`: compara dois perfis em um duelo visual
+## Experiências
 
-O resultado pode ser baixado como PNG, compartilhado por link e exibido com preview social automatica.
+### Ficha do desenvolvedor
 
----
-
-## O que o projeto faz
-
-### Card Mode
-
-- busca dados publicos de um perfil do GitHub
-- gera um card estilizado com avatar, bio e estatisticas
-- calcula `level`, `rarity`, `cardType` e atributos extras
-- mostra linguagem principal e atividade publica recente
-- permite baixar o card em PNG
-- permite compartilhar a URL do card
+- **Classe:** determinada por linguagens e sinais encontrados nos repositórios, como tópicos e adoção da comunidade.
+- **Atributos:** Código, Experiência, Conhecimento, Social e Consistência, normalizados de 0 a 100.
+- **Nível e XP:** progressão determinística baseada em dados públicos, sem limite baixo de nível.
+- **Raridade:** Common, Uncommon, Rare, Epic ou Legendary, calculada a partir de atributos e alcance dos projetos.
+- **Linguagens:** até cinco linguagens mais presentes entre os repositórios próprios analisados.
+- **Estatísticas:** repositórios públicos e seguidores do perfil, além das stars e atividade encontradas nos dados recentes.
+- **Compartilhamento:** URL do perfil, preview social e exportação PNG do card renderizado.
 
 ### Battle Mode
 
-- compara dois perfis em uma rota dedicada
-- avalia metricas como `level`, `followers`, `repos`, `anos no GitHub` e `power`
-- define vencedor por categoria e score final
-- permite baixar o duelo como imagem
-- bloqueia comparacao do mesmo perfil contra ele mesmo
+Compara dois perfis em uma rota compartilhável. O duelo atual compara nível, seguidores, repositórios, anos no GitHub e poder. Os mesmos dados estruturados de classe, atributos, raridade e progressão podem ser usados para ampliar as métricas de batalha.
 
----
+## Como os dados são obtidos
 
-## Rotas principais
+O app usa a GitHub REST API sem exigir login:
 
-- `/` -> home focada em gerar card
-- `/card/[username]` -> card compartilhavel de um usuario
-- `/battle` -> landing do modo batalha
-- `/battle/[leftUsername]/vs/[rightUsername]` -> resultado do duelo
-- `/card/[username]/opengraph-image` -> imagem social automatica
+- `GET /users/{username}` para dados públicos do perfil.
+- `GET /users/{username}/repos?per_page=100&sort=updated` para os até 100 repositórios mais recentemente atualizados.
+- `GET /users/{username}/events/public?per_page=100` para eventos públicos recentes.
 
----
+O perfil, os repositórios e os eventos são combinados no serviço de `src/lib/github`. As respostas são armazenadas em cache por uma hora.
 
-## Tecnologias utilizadas
+**Limites dos dados:** a lista de repositórios é uma amostra, não necessariamente o histórico completo do perfil. Stars, forks e distribuição de linguagens são calculados somente sobre os repositórios próprios dessa amostra. Atividade usa os eventos públicos disponíveis e considera os últimos 30 dias. O app não consulta o gráfico de contribuições do GitHub e, portanto, não inventa uma contagem anual de contribuições. Repositórios privados não são acessíveis sem autorização.
 
-- **Next.js 16** com App Router
-- **React**
-- **TypeScript**
-- **Tailwind CSS v4**
-- **html-to-image**
-- **Lucide React**
-- **GitHub REST API**
+## Regras do personagem
 
----
+Os cálculos ficam em funções puras em `src/lib/github/developer`, independentes da interface. As regras são determinísticas e usam apenas dados obtidos pelo app.
 
-## Arquitetura
+### Atributos
 
-O projeto foi estruturado para manter separacao clara entre:
+Todos os valores são arredondados e limitados ao intervalo de 0 a 100:
 
-- `app` -> rotas e composicao de paginas
-- `components/ui` -> design system reutilizavel
-- `components/github-card` -> componentes do card individual
-- `components/github-battle` -> componentes do modo batalha
-- `components/github-card-og` -> composicao da Open Graph image
-- `lib/github` -> integracao com a API e regras de dominio
-- `lib/github/card` -> regras especificas do card
-- `lib/github/battle` -> regras especificas do duelo
-- `lib/utils` -> utilitarios genericos
+- **Código:** `2 × repositórios próprios analisados + 10 × linguagens distintas`.
+- **Experiência:** `5 × anos no GitHub + 0,75 × repositórios próprios analisados`.
+- **Conhecimento:** `12 × linguagens distintas + 0,5 × repositórios próprios analisados`.
+- **Social:** 80% de seguidores e 20% de pessoas seguidas, ambos em escala logarítmica. Isso reduz o peso desproporcional de perfis com muitos seguidores.
+- **Consistência:** `2,5 × eventos públicos recentes + 5 × repositórios ativos nos últimos 30 dias`.
 
----
+Forks não contam como repositórios próprios para Código, Conhecimento ou linguagens. Experiência, Social e Consistência medem sinais diferentes e são mantidos separados.
 
-## Estrutura resumida
+### XP e nível
+
+O XP total é calculado com pesos simples:
+
+- 100 XP por repositório público informado pelo perfil;
+- 20 XP por star e 10 XP por fork somados nos repositórios próprios analisados;
+- 5 XP por seguidor;
+- 100 XP por ano no GitHub;
+- 20 XP por evento de push e 30 XP por repositório ativo observado nos últimos 30 dias;
+- 50 XP por linguagem distinta observada.
+
+O próximo nível exige `1.000 + 250 × nível atual` XP. O XP que sobra após subir de nível permanece no progresso seguinte. Os títulos são Novice (1–10), Apprentice (11–20), Adventurer (21–30), Veteran (31–40), Elite (41–50) e Legendary (51+).
+
+### Classe
+
+A classe avalia linguagens observadas e, quando disponíveis, nomes, descrições e tópicos dos repositórios:
+
+- **Full Stack Adventurer:** há linguagens de interface e de servidor.
+- **Frontend Knight** e **Backend Guardian:** predominância de sinais de interface ou servidor.
+- **Mobile Ranger:** linguagens como Kotlin, Swift, Dart ou Objective-C.
+- **DevOps Engineer:** linguagens de automação/infraestrutura ou tópicos correspondentes.
+- **Data Mage:** linguagens ou tópicos ligados a dados e análise.
+- **AI Alchemist:** nomes, descrições ou tópicos com sinais explícitos de IA.
+- **Open Source Paladin:** projetos próprios com pelo menos 25 stars ou 10 forks.
+- **Code Wizard:** fallback honesto quando não há evidência suficiente para especializar a classe.
+
+Se mais de uma classe for elegível, vence a que tiver maior pontuação de evidências; os critérios observados são incluídos na ficha. A classe não é sorteada.
+
+### Raridade
+
+A raridade é uma soma ponderada dos atributos: Código (25%), Experiência (20%), Conhecimento (20%), Social (10%) e Consistência (15%), mais alcance de código aberto (10%). O alcance usa stars e forks observados em escala logarítmica. Assim, seguidores sozinhos não elevam a raridade, e um perfil técnico pode obter raridade alta mesmo com poucos seguidores.
+
+- Common: abaixo de 32.
+- Uncommon: de 32 a menos de 52.
+- Rare: de 52 a menos de 70.
+- Epic: de 70 a menos de 85.
+- Legendary: 85 ou mais.
+
+### Linguagens
+
+As linguagens são contadas por repositório próprio com linguagem detectada pela API, ordenadas por frequência e limitadas às cinco primeiras. O percentual é relativo aos repositórios analisados com linguagem detectada; empates são ordenados alfabeticamente. Ele representa quantidade de repositórios, não linhas de código.
+
+## Imagem e acessibilidade
+
+O card da página e o PNG usam o mesmo componente e o mesmo elemento de exportação. `html-to-image` captura o card em resolução 2×, incluindo barras de progresso CSS e os ícones SVG da interface. A preview Open Graph é uma composição separada otimizada para 1200 × 630.
+
+Os valores das barras têm rótulos acessíveis, os avatares incluem texto alternativo e os estados de carregamento/erro possuem mensagens. A classe também é identificada por texto e critérios, não apenas pelo ícone.
+
+## Tecnologias e estrutura
+
+- Next.js 16 com App Router
+- React 19 e TypeScript estrito
+- Tailwind CSS v4
+- GitHub REST API
+- `html-to-image` para exportação PNG
+- Vitest para regras de domínio
 
 ```text
-src
-├─ app
-│  ├─ page.tsx
-│  ├─ battle
-│  │  ├─ page.tsx
-│  │  └─ [leftUsername]/vs/[rightUsername]/page.tsx
-│  ├─ card
-│  │  └─ [username]
-│  │     ├─ page.tsx
-│  │     └─ opengraph-image.tsx
-│  └─ _components
-│
-├─ components
-│  ├─ ui
-│  ├─ github-card
-│  ├─ github-battle
-│  └─ github-card-og
-│
-└─ lib
-   ├─ github
-   │  ├─ api.ts
-   │  ├─ mapper.ts
-   │  ├─ types.ts
-   │  ├─ card
-   │  ├─ battle
-   │  └─ activity
-   └─ utils
+src/
+├─ app/                         # Rotas, formulários e estados de página
+├─ components/
+│  ├─ github-card/              # Ficha visual exportável
+│  ├─ github-card-og/           # Imagem social
+│  ├─ github-battle/            # Comparação entre perfis
+│  └─ ui/                       # Componentes básicos
+└─ lib/
+   ├─ github/
+   │  ├─ developer/             # Tipos e cálculos puros do personagem
+   │  ├─ card/                  # Tema visual e regras existentes do card
+   │  ├─ battle/                # Métricas e resultado da batalha
+   │  └─ activity/              # Resumo de eventos públicos recentes
+   └─ utils/
 ```
 
----
+## Rotas
 
-## Dados usados do GitHub
+- `/` — gerar uma ficha.
+- `/card/[username]` — ficha compartilhável.
+- `/card/[username]/opengraph-image` — preview Open Graph.
+- `/battle` — início do Battle Mode.
+- `/battle/[leftUsername]/vs/[rightUsername]` — duelo compartilhável.
+- `/privacy` — política de privacidade.
 
-O projeto consome dados publicos do GitHub usando principalmente:
+## Executar
 
-- `GET /users/{username}`
-- `GET /users/{username}/repos`
-- `GET /users/{username}/events/public`
-
-Com isso, o app monta:
-
-- dados basicos do perfil
-- estatisticas gerais
-- linguagem principal
-- atividade publica recente
-- comparacao entre perfis
-
----
-
-## Design system
-
-O visual do projeto foi organizado com tokens globais em `:root`, incluindo:
-
-- cores base da interface
-- superficies e overlays
-- tokens de texto
-- estados de acao
-- tokens especificos dos temas do card
-
-O componente `Button` tambem passou a suportar variantes visuais para evitar botoes com o mesmo peso em todos os contextos.
-
----
-
-## Instalacao
+Requer Node.js e npm instalados.
 
 ```bash
 npm install
 npm run dev
 ```
 
-A aplicacao fica disponivel em:
+Abra <http://localhost:3000>, informe um username público do GitHub e gere a ficha. Na página do perfil, use **Baixar PNG** para exportar a mesma ficha exibida na tela.
 
-```text
-http://localhost:3000
+## Testes e build
+
+```bash
+npm run lint
+npm test
+npm run build
 ```
 
----
+Os testes cobrem fórmulas, limites, perfis com poucos e muitos dados, ausência de repositórios, classificação, raridade e XP. O lint usa as regras oficiais do Next.js.
 
-## Estado atual
+## Histórico e evolução
 
-O backlog principal do projeto foi concluido.
+Os cálculos recebem um `DeveloperProfile` serializável e produzem resultados independentes. Essa separação permite armazenar snapshots anuais e comparar atributos de dois perfis no futuro, sem exigir backend ou persistência nesta versão.
 
-As entregas originalmente previstas ja foram implementadas, com excecao da exportacao vertical para stories, que foi descartada por decisao de produto.
+## Licença
 
----
-
-## Licenca
-
-Este projeto esta disponivel sob a licenca MIT.
+Este projeto está disponível sob a licença MIT.
